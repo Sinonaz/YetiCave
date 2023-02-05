@@ -8,7 +8,7 @@ $categories = [
     'other' => 'Разное',
 ];
 
-$advertisements = [
+$lots = [
     [
         'name' => '2014 Rossignol District Snowboard',
         'project' => 'Доски и лыжи',

@@ -5,7 +5,7 @@ require_once('data.php');
 
 $content = include_template('main.php', [
     'categories' => $categories,
-    'advertisements' => $advertisements,
+    'lots' => $lots,
 ]);
 
 $layout = include_template('layout.php', [
