@@ -50,6 +50,16 @@ $advertisements = [
         'img_url' => 'img/lot-6.jpg',
     ],
 ];
+
+function format_price($price): string
+{
+    if ($price < 1000) {
+        return $price . ' ₽';
+    } else {
+        return number_format(ceil($price), $decimals = 0, $decimal_separator = ".", $thousands_separator = " ") . ' ₽';
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -130,7 +140,7 @@ $advertisements = [
                             <div class="lot__state">
                                 <div class="lot__rate">
                                     <span class="lot__amount">Стартовая цена</span>
-                                    <span class="lot__cost"><?= $key['price']; ?><b class="rub">р</b></span>
+                                    <span class="lot__cost"><?= format_price($key['price']); ?></span>
                                 </div>
                                 <div class="lot__timer timer">
                                     12:23
