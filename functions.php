@@ -26,3 +26,46 @@ function get_time_left($date)
 
     return $res;
 }
+
+function get_categories($connection)
+{
+    if (!$connection) {
+        $error = mysqli_connect_error();
+        return $error;
+    } else {
+        $sql = "SELECT character_code, name_category FROM categories";
+        $result = mysqli_query($connection, $sql);
+        if ($result) {
+            $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            return $categories;
+        } else {
+            $error = mysqli_error($connection);
+            return $error;
+        }
+    }
+
+}
+
+function get_lots($connection)
+{
+    if (!$connection) {
+        $error = mysqli_connect_error();
+        return $error;
+    } else {
+        $sql = "SELECT lots.id, lots.title, lots.img, lots.start_price, lots.date_finish, categories.name_category FROM lots JOIN categories ON lots.category_id=categories.id WHERE lots.date_finish > NOW() ORDER BY date_creation DESC";
+        $result = mysqli_query($connection, $sql);
+        if ($result) {
+            $lots = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            return $lots;
+        } else {
+            $error = mysqli_error($connection);
+            return $error;
+        }
+    }
+
+}
+
+function get_query_lot($lot_id)
+{
+    return "SELECT lots.title, lots.start_price, lots.img, lots.date_finish, lots.lot_description, categories.name_category FROM lots JOIN categories ON lots.category_id=categories.id WHERE lots.id=$lot_id";
+}
