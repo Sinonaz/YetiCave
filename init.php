@@ -1,3 +1,3 @@
 <?php
-$connection = mysqli_connect("localhost", "root", "", "yeticave");
-mysqli_set_charset($connection, 'utf8');
+$con = mysqli_connect("localhost", "root", "", "yeticave");
+mysqli_set_charset($con, "utf8");
