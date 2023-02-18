@@ -3,26 +3,29 @@
  * Форматирует цену лота - разделяет пробелом разряды числа, добавляет знак рубля
  * @param integer $num Цена лота
  * @return string Как цена будет показываться в карточке
-*/
-function format_num ($num) {
+ */
+function format_num($num)
+{
     $num = ceil($num);
     $num = number_format($num, 0, '', ' ');
 
     return "$num ₽";
-    }
+}
 
-function console_log( $data ){
+function console_log($data)
+{
     echo '<script>';
-    echo 'console.log('. json_encode( $data ) .')';
+    echo 'console.log(' . json_encode($data) . ')';
     echo '</script>';
-    }
+}
 
 /**
  * Возвращеет количество целых часов и остатка минут от настоящего времени до даты
  * @param string $date Дата истечения времени
  * @return array
-*/
-function get_time_left ($date) {
+ */
+function get_time_left($date)
+{
     date_default_timezone_set('Europe/Moscow');
     $final_date = date_create($date);
     $cur_date = date_create("now");
@@ -39,10 +42,10 @@ function get_time_left ($date) {
     $res[] = $minutes;
 
     return $res;
-    }
+}
 
 
-    /**
+/**
  * Создает подготовленное выражение на основе готового SQL запроса и переданных данных
  *
  * @param $link mysqli Ресурс соединения
@@ -51,7 +54,8 @@ function get_time_left ($date) {
  *
  * @return stmt Подготовленное выражение
  */
-function db_get_prepare_stmt_version($link, $sql, $data = []) {
+function db_get_prepare_stmt_version($link, $sql, $data = [])
+{
     $stmt = mysqli_prepare($link, $sql);
 
     if ($stmt === false) {
@@ -68,8 +72,7 @@ function db_get_prepare_stmt_version($link, $sql, $data = []) {
 
             if (is_int($value)) {
                 $type = 'i';
-            }
-            else if (is_double($value)) {
+            } else if (is_double($value)) {
                 $type = 'd';
             }
 
@@ -96,7 +99,8 @@ function db_get_prepare_stmt_version($link, $sql, $data = []) {
  * @param object $result_query mysqli Результат запроса к базе данных
  * @return array
  */
-function get_arrow ($result_query) {
+function get_arrow($result_query)
+{
     $row = mysqli_num_rows($result_query);
     if ($row === 1) {
         $arrow = mysqli_fetch_assoc($result_query);
@@ -114,17 +118,20 @@ function get_arrow ($result_query) {
  * @param array $allowed_list Список существующих категорий
  * @return string Текст сообщения об ошибке
  */
-function validate_category ($id, $allowed_list) {
+function validate_category($id, $allowed_list)
+{
     if (!in_array($id, $allowed_list)) {
         return "Указана несуществующая категория";
     }
 }
+
 /**
  * Проверяет что содержимое поля является числом больше нуля
  * @param string $num число которое ввел пользователь в форму
  * @return string Текст сообщения об ошибке
  */
-function validate_number ($num) {
+function validate_number($num)
+{
     if (!empty($num)) {
         $num *= 1;
         if (is_int($num) && $num > 0) {
@@ -132,14 +139,17 @@ function validate_number ($num) {
         }
         return "Содержимое поля должно быть целым числом больше ноля";
     }
-};
+}
+
+;
 
 /**
  * Проверяет что дата окончания торгов не меньше одного дня
  * @param string $date дата которую ввел пользователь в форму
  * @return string Текст сообщения об ошибке
  */
-function validate_date ($date) {
+function validate_date($date)
+{
     if (is_date_valid($date)) {
         $now = date_create("now");
         $d = date_create($date);
@@ -152,4 +162,35 @@ function validate_date ($date) {
     } else {
         return "Содержимое поля «дата завершения» должно быть датой в формате «ГГГГ-ММ-ДД»";
     }
-};
+}
+
+;
+//New
+/**
+ * Проверяет что содержимое поля является корректным адресом электронной почты
+ * @param string $email адрес электронной почты
+ * @return string Текст сообщения об ошибке
+ */
+function validate_email($email)
+{
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        return "E-mail должен быть корректным";
+    }
+}
+
+/**
+ * Проверяет что содержимое поля укладывается в допустимый диапазон
+ * @param string $value содержимое поля
+ * @param int $min минимальное количество символов
+ * @param int $max максимальное количество символов
+ * @return string Текст сообщения об ошибке
+ */
+function validate_length($value, $min, $max)
+{
+    if ($value) {
+        $len = strlen($value);
+        if ($len < $min or $len > $max) {
+            return "Значение должно быть от $min до $max символов";
+        }
+    }
+}
