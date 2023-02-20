@@ -5,6 +5,13 @@ require_once("data.php");
 require_once("init.php");
 require_once("models.php");
 
+if (!$is_auth) {
+    http_response_code(403);
+}
+
+if (http_response_code() !== 200) {
+    header("Location: /templates/404.html");
+}
 
 $categories = get_categories($con);
 $categories_id = array_column($categories, "id");

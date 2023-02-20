@@ -8,7 +8,7 @@ require_once("models.php");
 
 $categories = get_categories($con);
 
-$sql = get_query_list_lots ('2021-07-15');
+$sql = get_query_list_lots('2021-07-15');
 
 $res = mysqli_query($con, $sql);
 if ($res) {

@@ -194,3 +194,19 @@ function validate_length($value, $min, $max)
         }
     }
 }
+
+/**
+ * Проверяет поле почты для входа
+ * @param string $value содержимое поля
+ * @return string Текст сообщения об ошибке
+ */
+
+function verify_email($value, $allowed_list)
+{
+    if ($value) {
+        if (!in_array($value, $allowed_list)) {
+            return "Пользователь с таким email не существует";
+        }
+    }
+}
+
