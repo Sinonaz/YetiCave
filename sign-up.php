@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 
-$layout_content = include_template("layout-sign-up.php", [
+$layout_content = include_template("layout-pages.php", [
     "content" => $page_content,
     "categories" => $categories,
     "title" => "Регистрация",

@@ -108,10 +108,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $page_head = include_template("head.php", [
     "title" => "Добавить лот"
 ]);
-$layout_content = include_template("layout-add.php", [
+$layout_content = include_template("layout-pages.php", [
     "content" => $page_content,
     "categories" => $categories,
     "is_auth" => $is_auth,
+    "title" => "Добавить лот",
     "user_name" => $user_name
 ]);
 
