@@ -214,9 +214,20 @@ function verify_email($value, $allowed_list)
     }
 }
 
-function validate_bet($num)
+function validate_bet($num, $current_price)
 {
-    return $num;
+    if ($num or $num !== 0) {
+        $num *= 1;
+        if (is_int($num) && $num > 0) {
+            $required_price = $current_price;
+            if ($num >= $required_price) {
+                return NULL;
+            } else {
+                return "Значение должно быть больше или равно, чем текущая цена лота + шаг ставки";
+            }
+        }
+        return "Значение должно быть целым числом больше ноля";
+    }
 }
 
 /**

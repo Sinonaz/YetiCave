@@ -18,7 +18,7 @@ function get_query_list_lots($date)
  */
 function get_query_lot($id_lot)
 {
-    return "SELECT lots.title, lots.start_price, lots.img, lots.date_finish, lots.lot_description, categories.name_category FROM lots
+    return "SELECT lots.id, lots.title, lots.start_price, lots.step, lots.img, lots.date_finish, lots.lot_description, categories.name_category FROM lots
     JOIN categories ON lots.category_id=categories.id
     WHERE lots.id=$id_lot;";
 }
@@ -31,6 +31,17 @@ function get_query_lot($id_lot)
 function get_query_create_lot($user_id)
 {
     return "INSERT INTO lots (title, category_id, lot_description, start_price, step, date_finish, img, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, $user_id);";
+}
+
+/**
+ * Формирует SQL-запрос для создания нового лота
+ * @param integer $user_id id пользователя
+ * @param integer $lot_id id лота
+ * @return string SQL-запрос
+ */
+function get_query_create_bet($user_id, $lot_id)
+{
+    return "INSERT INTO bets (price_bet, user_id, lot_id) VALUES (?, $user_id, $lot_id);";
 }
 
 /**
@@ -172,17 +183,17 @@ function get_count_lots($link, $words)
  * @return [Array | String] $bets_data Двумерный массив с именами и емейлами пользователей
  * или описание последней ошибки подключения
  */
-function get_bets($con)
+function get_last_bet_price($con, $lot_id)
 {
     if (!$con) {
         $error = mysqli_connect_error();
         return $error;
     } else {
-        $sql = "SELECT * FROM bets;";
+        $sql = "SELECT price_bet FROM bets WHERE lot_id=$lot_id ORDER BY id DESC LIMIT 1;";
         $result = mysqli_query($con, $sql);
         if ($result) {
-            $bets_data = get_arrow($result);
-            return $bets_data;
+            $data = get_arrow($result);
+            return $data;
         }
         $error = mysqli_error($con);
         return $error;
@@ -199,7 +210,7 @@ function get_query_bets($con, $user_id)
         $sql = "SELECT bets.date_bet, bets.price_bet, lots.id, lots.title, lots.img, lots.date_finish, categories.name_category FROM bets JOIN lots ON bets.lot_id=lots.id JOIN categories ON lots.category_id=categories.id JOIN users ON bets.user_id=users.id WHERE users.id=$user_id";
         $result = mysqli_query($con, $sql);
         if ($result) {
-            $bets_data = get_arrow($result);
+            $bets_data = mysqli_fetch_all($result, MYSQLI_ASSOC);;
             return $bets_data;
         }
         $error = mysqli_error($con);

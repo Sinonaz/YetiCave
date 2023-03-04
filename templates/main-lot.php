@@ -24,11 +24,13 @@
                             Мин. ставка <span>12 000 р</span>
                         </div>
                     </div>
-                    <form class="lot-item__form" action="add-bet.php" method="post" autocomplete="off">
-                        <p class="lot-item__form-item form__item form__item--invalid">
+                    <?php $classname = isset($error) ? "form__item--invalid" : ""; ?>
+                    <form class="lot-item__form" action="lot.php?id=<?= $lot["id"]; ?>" method="post"
+                          autocomplete="off">
+                        <p class="lot-item__form-item form__item <?= $classname; ?>">
                             <label for="cost">Ваша ставка</label>
                             <input id="cost" type="text" name="cost" placeholder="12 000">
-                            <span class="form__error">Введите наименование лота</span>
+                            <span class="form__error"><?= $error; ?></span>
                         </p>
                         <button type="submit" class="button">Сделать ставку</button>
                     </form>

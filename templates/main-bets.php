@@ -3,6 +3,7 @@
     <table class="rates__list">
         <?php foreach ($bets as $bet): ?>
 
+
             <tr class="rates__item">
                 <td class="rates__info">
                     <div class="rates__img">

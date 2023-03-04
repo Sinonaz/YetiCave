@@ -15,7 +15,7 @@ if (http_response_code() !== 200) {
 
 $categories = get_categories($con);
 
-$bets = get_query_bets($con, 1);
+$bets = get_query_bets($con, $user_id);
 
 
 console_log($bets);
