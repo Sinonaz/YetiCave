@@ -30,9 +30,11 @@ function get_time_left($date)
     $final_date = date_create($date);
     $cur_date = date_create("now");
     $diff = date_diff($final_date, $cur_date);
-    $format_diff = date_interval_format($diff, "%d %H %I");
+    $format_diff = date_interval_format($diff, "%d %H %I %S");
     $arr = explode(" ", $format_diff);
 
+    $days = $arr[0];
+    $seconds = $arr[3];
     $hours = $arr[0] * 24 + $arr[1];
     $minutes = intval($arr[2]);
     $hours = str_pad($hours, 2, "0", STR_PAD_LEFT);
@@ -40,6 +42,8 @@ function get_time_left($date)
 
     $res[] = $hours;
     $res[] = $minutes;
+    $res[] = $days;
+    $res[] = $seconds;
 
     return $res;
 }
@@ -210,3 +214,28 @@ function verify_email($value, $allowed_list)
     }
 }
 
+function validate_bet($num)
+{
+    return $num;
+}
+
+/**
+ * Возвращеет количество целых минут от даты до настоящего времени
+ * @param string $date Дата
+ * @return array
+ */
+function get_minutes_past($date)
+{
+    date_default_timezone_set('Europe/Moscow');
+    $past_date = date_create($date);
+    $cur_date = date_create("now");
+    $diff = date_diff($past_date, $cur_date);
+    $format_diff = date_interval_format($diff, "%h %i");
+    $arr = explode(" ", $format_diff);
+
+    $minutes = ($arr[0] === "0") ? $arr[1] : $arr[0] * 60 + $arr[1];
+    $minutes = str_pad($minutes, 2, "0", STR_PAD_LEFT);
+
+
+    return $minutes;
+}

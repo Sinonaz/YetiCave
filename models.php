@@ -166,3 +166,43 @@ function get_count_lots($link, $words)
     return $error;
 }
 
+/**
+ * Возвращает массив данных ставок:
+ * @param $con Подключение к MySQL
+ * @return [Array | String] $bets_data Двумерный массив с именами и емейлами пользователей
+ * или описание последней ошибки подключения
+ */
+function get_bets($con)
+{
+    if (!$con) {
+        $error = mysqli_connect_error();
+        return $error;
+    } else {
+        $sql = "SELECT * FROM bets;";
+        $result = mysqli_query($con, $sql);
+        if ($result) {
+            $bets_data = get_arrow($result);
+            return $bets_data;
+        }
+        $error = mysqli_error($con);
+        return $error;
+    }
+}
+
+function get_query_bets($con, $user_id)
+{
+
+    if (!$con) {
+        $error = mysqli_connect_error();
+        return $error;
+    } else {
+        $sql = "SELECT bets.date_bet, bets.price_bet, lots.id, lots.title, lots.img, lots.date_finish, categories.name_category FROM bets JOIN lots ON bets.lot_id=lots.id JOIN categories ON lots.category_id=categories.id JOIN users ON bets.user_id=users.id WHERE users.id=$user_id";
+        $result = mysqli_query($con, $sql);
+        if ($result) {
+            $bets_data = get_arrow($result);
+            return $bets_data;
+        }
+        $error = mysqli_error($con);
+        return $error;
+    }
+}

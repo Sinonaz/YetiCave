@@ -7,7 +7,8 @@
             <?php foreach ($goods as $good): ?>
                 <li class="lots__item lot">
                     <div class="lot__image">
-                        <img src="<?= $good["img"]; ?>" width="350" height="260" alt="">
+                        <img src="<?= $good["img"]; ?>" width="350" height="260"
+                             alt="<?= htmlspecialchars($good["title"]); ?>">
                     </div>
                     <div class="lot__info">
                         <span class="lot__category"><?= $good["name_category"]; ?></span>
@@ -54,7 +55,7 @@
         </ul>
     <?php endif; ?>
 </div>
-<!--<? // $panagination; ?>-->
+<? $panagination; ?>
 <?php else: ?>
     <h2>Ничего не найдено по вашему запросу</h2>
 <?php endif; ?>
